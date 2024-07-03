@@ -1,0 +1,42 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Project {
+  client      Client?            @relation(fields: [clientId], references: [id])
+  clientId    String?
+  createdAt   DateTime           @default(now())
+  description String?
+  id          String             @id @default(cuid())
+  status      EnumProjectStatus?
+  title       String?
+  updatedAt   DateTime           @updatedAt
+}
+
+model Referent {
+  createdAt DateTime @default(now())
+  email     String?
+  id        String   @id @default(cuid())
+  name      String?
+  phone     String?
+  updatedAt DateTime @updatedAt
+}
+
+model Client {
+  createdAt DateTime  @default(now())
+  email     String?
+  id        String    @id @default(cuid())
+  name      String?
+  phone     String?
+  projects  Project[]
+  updatedAt DateTime  @updatedAt
+}
+
+enum EnumProjectStatus {
+  Option1
+}
